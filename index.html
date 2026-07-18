@@ -1,1 +1,769 @@
-deck-presentasi.html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinkronisasi Kurikulum PPLG — SMK PGRI 35 Solokanjeruk × Next IT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+                :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --bg-subtle: #141414;
+            --text: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --accent: #6366f1;
+            --accent-light: #818cf8;
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --muted: #27272a;
+            --success: #22c55e;
+            --success-bg: rgba(34, 197, 94, 0.1);
+            --warning: #f59e0b;
+            --warning-bg: rgba(245, 158, 11, 0.1);
+            --danger: #ef4444;
+            --danger-bg: rgba(239, 68, 68, 0.1);
+            --border: #27272a;
+            --radius-sm: 6px;
+            --radius: 8px;
+            --radius-lg: 12px;
+            --font-display: 'Inter', system-ui, sans-serif;
+            --font-body: 'Inter', system-ui, sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+            height: 100dvh;
+        }
+        .presentation { width: 100%; height: 100dvh; position: relative; overflow: hidden; }
+        .slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            padding: 48px 72px 96px 72px;
+            display: flex; flex-direction: column; justify-content: center;
+            opacity: 0; transform: translateX(100%);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none; visibility: hidden;
+        }
+        .slide.active { opacity: 1; transform: translateX(0); pointer-events: all; visibility: visible; }
+        .slide-cover { text-align: center; align-items: center; }
+        .cover-icon { font-size: 2.5rem; margin-bottom: 24px; opacity: 0.8; }
+        .cover-title { font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 600; line-height: 1.15; color: var(--text); margin-bottom: 16px; letter-spacing: -0.03em; }
+        .cover-title span { color: var(--accent-light); }
+        .cover-subtitle { font-size: 1.1rem; color: var(--text-secondary); max-width: 700px; line-height: 1.7; margin-bottom: 32px; }
+        .cover-meta { font-size: 0.9rem; color: var(--text-muted); letter-spacing: 0.02em; }
+        .slide-label { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+        .slide-title { font-family: var(--font-display); font-size: clamp(1.6rem, 3.5vw, 2.8rem); font-weight: 600; line-height: 1.25; margin-bottom: 12px; color: var(--text); letter-spacing: -0.02em; }
+        .slide-title span { color: var(--accent-light); }
+        .slide-subtitle { font-size: 1.05rem; color: var(--text-secondary); max-width: 800px; line-height: 1.7; margin-bottom: 28px; }
+        .data-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .data-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 20px; text-align: center; }
+        .data-value { font-family: var(--font-display); font-size: 2.2em; font-weight: 600; margin-bottom: 6px; letter-spacing: -0.03em; }
+        .data-value.accent { color: var(--accent-light); }
+        .data-value.cyan { color: #22d3ee; }
+        .data-value.danger { color: var(--danger); }
+        .data-value.success { color: var(--success); }
+        .data-value.warning { color: var(--warning); }
+        .data-label { font-size: 0.85em; color: var(--text-muted); line-height: 1.5; }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+        .col-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+        .col-card h3 { font-family: var(--font-display); font-size: 1rem; font-weight: 600; margin-bottom: 14px; color: var(--text); }
+        .col-card ul { list-style: none; }
+        .col-card li { padding: 8px 0 8px 20px; position: relative; color: var(--text-secondary); line-height: 1.6; border-bottom: 1px solid var(--border); font-size: 0.95em; }
+        .col-card li:last-child { border-bottom: none; }
+        .col-card li::before { content: ''; position: absolute; left: 0; top: 13px; width: 12px; height: 9px; background: var(--success); -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 6L9 17L4 12' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E") center/contain no-repeat; mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 6L9 17L4 12' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E") center/contain no-repeat; }
+        .highlight-box { background: var(--accent-glow); border-left: 3px solid var(--accent); border-radius: var(--radius); padding: 20px 24px; margin-top: 20px; }
+        .highlight-box p { color: var(--text-secondary); font-size: 1em; line-height: 1.7; }
+        .highlight-box strong { color: var(--text); }
+        .timeline { display: grid; gap: 12px; }
+        .timeline-item { display: flex; gap: 16px; align-items: flex-start; }
+        .timeline-marker { width: 36px; height: 36px; background: var(--muted); border: 1px solid var(--border); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); flex-shrink: 0; }
+        .timeline-marker.active { background: var(--accent); border-color: var(--accent); color: white; }
+        .timeline-content { flex: 1; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; }
+        .timeline-content h3 { font-size: 1em; font-weight: 600; margin-bottom: 4px; color: var(--text); }
+        .timeline-content p { color: var(--text-secondary); font-size: 0.9em; line-height: 1.6; }
+        .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .comp-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
+        .comp-card h3 { font-family: var(--font-display); font-size: 1rem; font-weight: 600; margin-bottom: 12px; }
+        .comp-card p { color: var(--text-secondary); font-size: 0.95em; line-height: 1.7; }
+        .location-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; margin-top: 20px; }
+        .location-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+        .location-icon { width: 44px; height: 44px; background: var(--accent); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .location-icon svg { width: 22px; height: 22px; stroke: white; fill: none; stroke-width: 2; }
+        .location-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .location-stat { text-align: center; }
+        .location-stat strong { display: block; font-size: 1.2em; font-weight: 600; color: var(--accent-light); margin-bottom: 4px; }
+        .location-stat span { font-size: 0.85em; color: var(--text-muted); }
+        .num-badge { width: 44px; height: 44px; background: var(--muted); border: 1px solid var(--border); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 1.1rem; color: var(--text-secondary); font-weight: 600; flex-shrink: 0; }
+        .icon-gap { display: flex; align-items: center; gap: 16px; }
+        .icon-gap svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+        .program-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 24px; display: flex; align-items: center; gap: 16px; }
+        .tag { display: inline-block; padding: 3px 10px; font-size: 0.75rem; font-weight: 600; border-radius: 4px; }
+        .tag-danger { background: var(--danger-bg); color: var(--danger); }
+        .tag-warning { background: var(--warning-bg); color: var(--warning); }
+        .tag-success { background: var(--success-bg); color: var(--success); }
+        .tag-accent { background: var(--accent-glow); color: var(--accent-light); }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.9em; }
+        thead th { padding: 12px 16px; text-align: left; font-weight: 600; color: var(--text-secondary); font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.04em; background: var(--bg-subtle); border-bottom: 1px solid var(--border); }
+        thead th:first-child { border-radius: var(--radius-sm) 0 0 0; }
+        thead th:last-child { border-radius: 0 var(--radius-sm) 0 0; }
+        tbody td { padding: 11px 16px; border-bottom: 1px solid var(--border); color: var(--text-secondary); font-size: 1em; }
+        .gap-kritis td { background: var(--danger-bg); }
+        .gap-besar td { background: var(--warning-bg); }
+        .gap-ok td { background: var(--success-bg); }
+
+        .priority-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; display: flex; align-items: flex-start; gap: 16px; }
+        .priority-num { width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; flex-shrink: 0; }
+
+        .roadmap-table { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 12px; }
+        .roadmap-table thead th { background: var(--muted); color: var(--text); font-weight: 600; font-size: 0.9em; text-transform: none; letter-spacing: normal; }
+        .roadmap-table thead th:first-child { border-radius: 0; }
+        .roadmap-table thead th:last-child { border-radius: 0; }
+
+        .ring-grid { display: grid; gap: 16px; }
+        .ring-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; }
+        .ring-item h3 { font-family: var(--font-display); font-size: 1rem; font-weight: 600; margin-bottom: 12px; }
+        .ring-item ul { list-style: none; }
+        .ring-item li { padding: 6px 0 6px 20px; position: relative; color: var(--text-secondary); font-size: 0.95em; line-height: 1.6; }
+        .ring-item li::before { content: '–'; position: absolute; left: 0; color: var(--text-muted); }
+        .ring-item.highlight { border-color: var(--accent); background: var(--accent-glow); }
+
+        .nav { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; display: flex; align-items: center; justify-content: center; gap: 20px; z-index: 100; background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(16px); padding: 14px; border-top: 1px solid var(--border); }
+        .nav-btn { width: 40px; height: 40px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-card); color: var(--text-secondary); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; font-weight: 500; transition: all 0.2s ease; }
+        .nav-btn:hover { background: var(--muted); border-color: var(--border); color: var(--text); }
+        .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .slide-counter { font-family: var(--font-display); font-size: 0.9rem; font-weight: 500; color: var(--text-muted); min-width: 70px; text-align: center; }
+        .progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); transition: width 0.4s ease; z-index: 100; }
+
+        @media (max-width: 1024px) {
+            .slide { padding: 36px 28px 88px 28px; }
+            .data-grid { grid-template-columns: repeat(2, 1fr); }
+            .two-col { grid-template-columns: 1fr; gap: 12px; }
+            .location-stats { grid-template-columns: repeat(2, 1fr); }
+            .comp-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .slide { padding: 24px 18px 80px 18px; }
+            .slide-title { font-size: clamp(1.3rem, 4.5vw, 1.8rem); }
+            .slide-subtitle { font-size: 0.95rem; }
+            .data-grid { grid-template-columns: 1fr; gap: 10px; }
+            .two-col { gap: 10px; }
+            .location-stats { grid-template-columns: 1fr; }
+            .col-card { padding: 18px; }
+            .program-card { flex-direction: column; text-align: center; }
+            .nav { padding: 10px; gap: 12px; }
+            .nav-btn { width: 38px; height: 38px; }
+        }
+        @media (max-width: 480px) {
+            body { overflow: auto; position: static; height: auto; }
+            .slide { position: relative; height: auto; min-height: 100dvh; justify-content: flex-start; padding: max(14px, env(safe-area-inset-top)) 14px 110px; top: auto; left: auto; opacity: 0; display: none; transform: none; }
+            .slide.active { opacity: 1; display: flex; position: relative; transform: none; visibility: visible; }
+            .slide-cover.slide.active { display: flex; align-items: center; justify-content: center; min-height: 100dvh; }
+            .nav { position: sticky; }
+            .progress { position: fixed; }
+        }</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="presentation">
+
+<!-- 1: Cover -->
+<section class="slide slide-cover active" data-slide="1">
+    <div class="cover-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="48" height="48">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+            <polyline points="2 17 12 22 22 17"/>
+            <polyline points="2 12 12 17 22 12"/>
+        </svg>
+    </div>
+    <h1 class="cover-title">Sinkronisasi <span>Kurikulum PPLG</span></h1>
+    <p class="cover-subtitle">SMK PGRI 35 Solokanjeruk x Next IT<br>Menyelaraskan Pendidikan Vokasi dengan Kebutuhan Industri Tahun 2026+</p>
+    <div class="cover-meta">Pratomo Bowo Leksono — CBO • PT Niaga Expert Teknologi • 25 Juni 2026</div>
+</section>
+
+<!-- 2: Fakta Pahit -->
+<section class="slide" data-slide="2">
+    <p class="slide-label">KONDISI LAPANGAN</p>
+    <h2 class="slide-title">Lulusan SMK — <span>Paling Sulit Memperoleh Pekerjaan</span></h2>
+    <p class="slide-subtitle">Data BPS Sakernas Feb 2026: TPT Lulusan SMK tertinggi dari semua jenjang pendidikan</p>
+    <div class="data-grid">
+        <div class="data-card"><div class="data-value danger">7,74%</div><div class="data-label">TPT Lulusan SMK<br>Feb 2026</div></div>
+        <div class="data-card"><div class="data-value accent">8,60%</div><div class="data-label">TPT Lulusan SMK<br>Ags 2025</div></div>
+        <div class="data-card"><div class="data-value cyan">4,74%</div><div class="data-label">TPT Nasional<br>Nov 2025</div></div>
+        <div class="data-card"><div class="data-value danger">>50%</div><div class="data-label">Pengangguran<br>didominasi SMA/SMK</div></div>
+    </div>
+    <div class="two-col">
+        <div class="col-card">
+            <h3 style="color: var(--danger);">Faktor Penyebab</h3>
+            <ul>
+                <li>Kurikulum belum sejalan dengan dinamika industri</li>
+                <li>AI dan otomatisasi mengubah komposisi pekerjaan</li>
+                <li>Soft skill masih kurang (komunikasi, problem solving)</li>
+                <li>Pemilihan jurusan belum sepenuhnya sesuai kebutuhan industri</li>
+            </ul>
+        </div>
+        <div class="col-card">
+            <h3 style="color: var(--warning);">Tantangan Spesifik PPLG</h3>
+            <ul>
+                <li>Jumlah lowongan developer masih tinggi</li>
+                <li>Kualifikasi yang diminta telah bergeser secara signifikan</li>
+                <li>React, TypeScript, Git, dan AI tools menjadi persyaratan</li>
+                <li>Lulusan dengan kompetensi vanilla PHP tidak kompetitif</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- 3: Industri IT -->
+<section class="slide" data-slide="3">
+    <p class="slide-label">KABAR BAIK</p>
+    <h2 class="slide-title">Industri IT Tetap <span>Sektor Paling Dibutuhkan</span></h2>
+    <p class="slide-subtitle">Jumlah lowongan IT tetap tinggi di tahun 2026 — Jobstreet, Indeed, Glints</p>
+    <div class="data-grid">
+        <div class="data-card"><div class="data-value success">3.348</div><div class="data-label">Lowongan IT<br>Jobstreet Jun 2026</div></div>
+        <div class="data-card"><div class="data-value success">196</div><div class="data-label">Lowongan IT<br>Indeed Jun 2026</div></div>
+        <div class="data-card"><div class="data-value accent">3x</div><div class="data-label">AI/ML Engineer<br>Growth YoY</div></div>
+        <div class="data-card"><div class="data-value cyan">#1</div><div class="data-label">Full-stack Developer<br>Paling Dibutuhkan</div></div>
+    </div>
+    <div class="two-col">
+        <div class="col-card">
+            <h3 style="color: var(--accent-light);">Kompetensi Kunci 2026</h3>
+            <ul>
+                <li>Full-stack Development: React/Next.js + Node.js</li>
+                <li>AI dan Prompt Engineering — di setiap peran</li>
+                <li>Git dan Version Control — fundamental daily driver</li>
+                <li>Cloud dan Deployment — Vercel, Docker, CI/CD</li>
+                <li>Cybersecurity Dasar — OWASP, secure coding</li>
+            </ul>
+        </div>
+        <div class="col-card">
+            <h3 style="color: var(--success);">Peluang bagi SMK PGRI 35 Solokanjeruk</h3>
+            <ul>
+                <li>PPLG jurusan paling sesuai kebutuhan industri</li>
+                <li>Lowongan IT melimpah, namun lulusan masih menganggur</li>
+                <li>Kesenjangan kompetensi teridentifikasi dengan jelas dan dapat diatasi</li>
+                <li>Menjadi pionir dalam kurikulum yang selaras dengan industri</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- 4: AI vs Developer -->
+<section class="slide" data-slide="4">
+    <p class="slide-label">FAKTA VS HYPE</p>
+    <h2 class="slide-title">Akankah AI Menggantikan Developer? — <span>Ini Data Nyatanya</span></h2>
+    <div class="comp-grid">
+        <div class="comp-card" style="border-left: 4px solid var(--danger);">
+            <h3 style="color: var(--danger);">Yang Beredar di Medsos</h3>
+            <p style="color: var(--text-secondary); line-height: 1.7;">Programmer akan digantikan oleh AI<br>Tidak perlu belajar coding, AI yang mengerjakan<br>Vibe coding menandakan developer sudah usang</p>
+        </div>
+        <div class="comp-card" style="border-left: 4px solid var(--success);">
+            <h3 style="color: var(--success);">Data Nyata 2026</h3>
+            <p style="color: var(--text-secondary); line-height: 1.7;">Hanya <strong style="color: var(--success);">3,3%</strong> dari 1.282 lowongan minta AI<br>AI adalah kompetensi tambahan, bukan pengganti<br>83,1% developer tetap optimistis</p>
+        </div>
+    </div>
+    <div class="location-card">
+        <div class="location-header">
+            <div class="location-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                    <line x1="6" y1="6" x2="6.01" y2="6"/>
+                    <line x1="6" y1="18" x2="6.01" y2="18"/>
+                </svg>
+            </div>
+            <div>
+                <h3>Evolusi Peran Developer</h3>
+                <p style="color: var(--text-secondary);">Dahulu ke Sekarang ke Masa Depan</p>
+            </div>
+        </div>
+        <div class="location-stats">
+            <div class="location-stat"><strong>2020</strong><span>Nulis semua manual<br>Google + Stack Overflow</span></div>
+            <div class="location-stat"><strong>2024-25</strong><span>AI assisted coding<br>Copilot, ChatGPT</span></div>
+            <div class="location-stat"><strong>2026+</strong><span>Arsitek + Orchestrator<br>Supervisor AI</span></div>
+            <div class="location-stat"><strong>Konstan</strong><span>Logika, problem solving<br>soft skill tetap</span></div>
+        </div>
+    </div>
+    <div class="highlight-box" style="margin-top: 20px;">
+        <p><strong>Pokok Pesan:</strong> AI bukan ancaman — AI ancaman buat developer yang <strong>tidak mau belajar</strong>. Lulusan dengan fundamental coding yang kuat dan kompetensi AI akan sangat bernilai di tahun 2026 dan seterusnya.</p>
+    </div>
+</section>
+
+<!-- 5: Agenda -->
+<section class="slide" data-slide="5">
+    <p class="slide-label">AGENDA</p>
+    <h2 class="slide-title">Agenda <span>Hari Ini</span></h2>
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-marker active">A</div>
+            <div class="timeline-content"><h3>Fakta Kondisi Lulusan SMK dan Industri 2026</h3><p>Telah kita bahas bersama — data menunjukkan gap yang jelas</p></div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-marker">1</div>
+            <div class="timeline-content"><h3>Gap Analysis — Kurikulum vs Kebutuhan Industri</h3><p>Mapping 12 skill industri vs CP existing</p></div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-marker">2</div>
+            <div class="timeline-content"><h3>5 Program Rekomendasi</h3><p>Prioritas: AI Integration, Modern Web Stack, Git/DevOps, Database, Industry Exposure</p></div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-marker">3</div>
+            <div class="timeline-content"><h3>Breakdown Per Semester + Roadmap</h3><p>Kelas X, XI, XII — 3 Fase Implementasi</p></div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-marker">4</div>
+            <div class="timeline-content"><h3>Next Steps dan Diskusi</h3><p>Langkah selanjutnya bersama pihak sekolah</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- 6: Reality Check -->
+<section class="slide" data-slide="6">
+    <p class="slide-label">REALITY CHECK</p>
+    <h2 class="slide-title">Industri IT 2026 — <span>Reality Check</span></h2>
+    <p class="slide-subtitle">Data yang mendukung setiap rekomendasi</p>
+    <div class="data-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="data-card"><div class="data-value accent">80%</div><div class="data-label">Developer menggunakan AI tools<br>Stack Overflow 2025</div></div>
+        <div class="data-card"><div class="data-value success">+25%</div><div class="data-label">Kompetensi AI meningkatkan gaji<br>Nodeflair 2026</div></div>
+        <div class="data-card"><div class="data-value warning">3x</div><div class="data-label">Lowongan AI naik<br>IDStar 2026</div></div>
+        <div class="data-card"><div class="data-value danger">73%</div><div class="data-label">Developer Indonesia belum memiliki kompetensi AI<br>Peluang besar!</div></div>
+        <div class="data-card"><div class="data-value accent">69,7%</div><div class="data-label">React market share<br>5,3jt+ perusahaan</div></div>
+        <div class="data-card"><div class="data-value cyan">#1</div><div class="data-label">TypeScript di GitHub<br>Octoverse 2025</div></div>
+    </div>
+    <div class="highlight-box">
+        <p><strong>Kesimpulan:</strong> Kompetensi yang dibutuhkan industri telah bergeser — namun kurikulum SMK belum turut menyesuaikan. Ini peluang SMK PGRI 35 Solokanjeruk.</p>
+    </div>
+</section>
+
+<!-- 7: Daftar Gap -->
+<section class="slide" data-slide="7">
+    <p class="slide-label">GAP ANALYSIS</p>
+    <h2 class="slide-title">Kurikulum PPLG vs <span>Kebutuhan Industri</span></h2>
+    <div style="margin: 24px 0;">
+        <table>
+            <thead><tr><th>Skill Industri 2026</th><th style="text-align:center;width:80px;">Di CP?</th><th style="text-align:center;width:100px;">Prioritas</th><th>Dampak terhadap Lulusan</th></tr></thead>
+            <tbody>
+                <tr class="gap-kritis"><td>React / Next.js</td><td style="text-align:center;">-</td><td style="text-align:center;"><span class="tag tag-danger">KRITIS</span></td><td>Tidak lolos seleksi frontend</td></tr>
+                <tr class="gap-kritis"><td>Git dan GitHub</td><td style="text-align:center;">-</td><td style="text-align:center;"><span class="tag tag-danger">KRITIS</span></td><td>Tidak mampu berkolaborasi dalam tim</td></tr>
+                <tr class="gap-kritis"><td>AI/LLM Integration</td><td style="text-align:center;">-</td><td style="text-align:center;"><span class="tag tag-danger">KRITIS</span></td><td>Tertinggal 3 tahun ke depan</td></tr>
+                <tr class="gap-kritis"><td>TypeScript</td><td style="text-align:center;">-</td><td style="text-align:center;"><span class="tag tag-danger">KRITIS</span></td><td>Kode tidak scalable</td></tr>
+                <tr class="gap-kritis"><td>Docker dan Container</td><td style="text-align:center;">-</td><td style="text-align:center;"><span class="tag tag-danger">KRITIS</span></td><td>Tidak memahami environment development standar</td></tr>
+                <tr class="gap-besar"><td>Deployment dan CI/CD</td><td style="text-align:center;">-</td><td style="text-align:center;"><span class="tag tag-warning">BESAR</span></td><td>Portfolio hanya tersimpan di localhost</td></tr>
+                <tr><td>REST API dan Postman</td><td style="text-align:center;">~</td><td style="text-align:center;"><span class="tag tag-warning">BESAR</span></td><td>Tidak mampu mengintegrasikan sistem</td></tr>
+                <tr class="gap-ok"><td><strong>HTML, CSS, JS, OOP, SQL</strong></td><td style="text-align:center;">+</td><td style="text-align:center;"><span class="tag tag-success">OK</span></td><td>Fondasi sudah baik</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- 8: Ringkasan Gap -->
+<section class="slide" data-slide="8">
+    <p class="slide-label">PRIORITAS</p>
+    <h2 class="slide-title">Ringkasan <span>Prioritas Gap</span></h2>
+    <p class="slide-subtitle">Fondasi yang sudah ada telah baik — peningkatan teknologi modern yang digunakan industri</p>
+    <div style="max-width: 1200px; margin: 32px auto;">
+        <div style="background: var(--danger-bg); border: 2px solid var(--danger); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; text-align: center;">
+            <div style="font-size: 1.5rem; font-weight: 800; color: var(--danger); margin-bottom: 8px;">KRITIS (5)</div>
+            <div style="color: var(--text-secondary);">React/Next.js • Git • AI/LLM • TypeScript • Docker</div>
+        </div>
+        <div style="background: var(--warning-bg); border: 2px solid var(--warning); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; text-align: center;">
+            <div style="font-size: 1.3rem; font-weight: 800; color: var(--warning); margin-bottom: 8px;">BESAR (2)</div>
+            <div style="color: var(--text-secondary);">Deployment/CI/CD • REST API</div>
+        </div>
+        <div style="background: rgba(99, 102, 241, 0.1); border: 2px solid var(--accent); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; text-align: center;">
+            <div style="font-size: 1.1rem; font-weight: 800; color: var(--accent-light); margin-bottom: 8px;">SEDANG (5)</div>
+            <div style="color: var(--text-secondary);">Tailwind • Agile • ORM/NoSQL • Cloud • Testing</div>
+        </div>
+        <div style="background: var(--success-bg); border: 2px solid var(--success); border-radius: var(--radius); padding: 20px; text-align: center;">
+            <div style="font-size: 1.1rem; font-weight: 800; color: var(--success); margin-bottom: 8px;">OK (4)</div>
+            <div style="color: var(--text-secondary);">HTML/CSS/JS • OOP • SQL • Mobile</div>
+        </div>
+    </div>
+    <div class="highlight-box" style="margin-top: 16px;">
+        <p>Ini bukanlah perubahan total — ini <strong>upgrade</strong>. Fondasi existing sudah sangat baik. Yang kurang adalah teknologi modern.</p>
+    </div>
+</section>
+
+<!-- 9: Data Pendukung -->
+<section class="slide" data-slide="9">
+    <p class="slide-label">RESEARCH-BASED</p>
+    <h2 class="slide-title">Semua Rekomendasi <span>Berdasarkan Data Riset</span></h2>
+    <p class="slide-subtitle">10+ sumber kredibel — bukan sekadar opini</p>
+    <div style="margin: 24px 0;">
+        <table>
+            <thead><tr><th>Data</th><th>Source</th><th>Key Takeaway</th></tr></thead>
+            <tbody style="color: var(--text-secondary); font-size: 0.95em;">
+                <tr><td style="padding:10px 18px;"><strong style="color:var(--text);">TPT SMK tertinggi 7,74%</strong></td><td style="padding:10px 18px;">BPS Sakernas Feb 2026</td><td style="padding:10px 18px;">Terdapat masalah serius pada link and match</td></tr>
+                <tr><td style="padding:10px 18px;"><strong style="color:var(--text);">80% developer pakai AI tools</strong></td><td style="padding:10px 18px;">Stack Overflow Survey 2025</td><td style="padding:10px 18px;">AI bukan lagi bersifat opsional</td></tr>
+                <tr><td style="padding:10px 18px;"><strong style="color:var(--text);">React 69,7% market share</strong></td><td style="padding:10px 18px;">TechnologyChecker.io 2026</td><td style="padding:10px 18px;">Framework web paling dominan</td></tr>
+                <tr><td style="padding:10px 18px;"><strong style="color:var(--text);">Next.js 67% enterprise projects</strong></td><td style="padding:10px 18px;">Focus Reactive 2026</td><td style="padding:10px 18px;">Standar enterprise</td></tr>
+                <tr><td style="padding:10px 18px;"><strong style="color:var(--text);">TypeScript #1 by repo count</strong></td><td style="padding:10px 18px;">GitHub Octoverse 2025</td><td style="padding:10px 18px;">Harus menjadi bahasa pemrograman utama</td></tr>
+                <tr><td style="padding:10px 18px;"><strong style="color:var(--text);">AI skill +25% gaji</strong></td><td style="padding:10px 18px;">Nodeflair 2026</td><td style="padding:10px 18px;">Kompetensi paling bernilai</td></tr>
+                <tr><td style="padding:10px 18px;"><strong style="color:var(--text);">450+ Git jobs di Indonesia</strong></td><td style="padding:10px 18px;">Jobstreet/Indeed 2026</td><td style="padding:10px 18px;">Syarat mutlak memasuki dunia kerja</td></tr>
+                <tr><td style="padding:10px 18px;"><strong style="color:var(--text);">Hanya 3,3% lowongan mensyaratkan kompetensi AI</strong></td><td style="padding:10px 18px;">H-Studio (1.282 listing)</td><td style="padding:10px 18px;">Akankah AI menggantikan developer? Data menjawab: belum</td></tr>
+                <tr><td style="padding:10px 18px;"><strong style="color:var(--text);">56% developer menggunakan container</strong></td><td style="padding:10px 18px;">Stack Overflow 2025</td><td style="padding:10px 18px;">Docker standar dev environment</td></tr>
+                <tr><td style="padding:10px 18px;"><strong style="color:var(--text);">Kurikulum SMK</strong></td><td style="padding:10px 18px;">Kepmendikbudristek No.56/2022</td><td style="padding:10px 18px;">Framework resmi yang bisa jadi acuan</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- 10: 5 Program Overview -->
+<section class="slide" data-slide="10">
+    <p class="slide-label">SOLUSI</p>
+    <h2 class="slide-title">5 Program Konkret — <span>Sinkronisasi PPLG x Next IT</span></h2>
+    <div style="margin: 24px 0; display: grid; gap: 12px;">
+        <div class="icon-gap" style="background: var(--bg-card); border: 1px solid var(--accent); border-radius: var(--radius); padding: 20px 28px;">
+            <span class="num-badge">1</span>
+            <div><div style="font-weight: 600; color: var(--text); margin-bottom: 4px;">AI dan API Integration — Prioritas Tertinggi</div><div style="color: var(--text-secondary); font-size: 0.95rem;">Diferensiasi terbesar — belum ada SMK lain yang memiliki inisiatif ini</div></div>
+        </div>
+        <div class="icon-gap" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 28px;">
+            <span class="num-badge">2</span>
+            <div><div style="font-weight: 600; color: var(--text); margin-bottom: 4px;">Modern Web Stack</div><div style="color: var(--text-secondary); font-size: 0.95rem;">React + Next.js + TypeScript + Tailwind</div></div>
+        </div>
+        <div class="icon-gap" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 28px;">
+            <span class="num-badge">3</span>
+            <div><div style="font-weight: 600; color: var(--text); margin-bottom: 4px;">Git dan DevOps Pipeline</div><div style="color: var(--text-secondary); font-size: 0.95rem;">GitHub + CI/CD + Deployment</div></div>
+        </div>
+        <div class="icon-gap" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 28px;">
+            <span class="num-badge">4</span>
+            <div><div style="font-weight: 600; color: var(--text); margin-bottom: 4px;">Database Modern</div><div style="color: var(--text-secondary); font-size: 0.95rem;">ORM + NoSQL + Cloud</div></div>
+        </div>
+        <div class="icon-gap" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 28px;">
+            <span class="num-badge">5</span>
+            <div><div style="font-weight: 600; color: var(--text); margin-bottom: 4px;">Industry Exposure</div><div style="color: var(--text-secondary); font-size: 0.95rem;">PKL standar dev, portofolio, soft skill</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- 11: Program 1 AI -->
+<section class="slide" data-slide="11">
+    <p class="slide-label">PROGRAM 1 — PRIORITAS TERTINGGI</p>
+    <h2 class="slide-title">AI dan API <span>Integration</span></h2>
+    <p class="slide-subtitle">73% developer Indonesia belum memiliki kompetensi AI — skill paling dicari 2026</p>
+    <div class="two-col">
+        <div class="col-card" style="border-left: 4px solid var(--danger);">
+            <h3 style="color: var(--danger);">Masalah</h3>
+            <ul><li>Belum ada AI/LLM dalam CP yang ada</li><li>73% developer Indonesia belum memiliki kompetensi AI</li><li>Peluang peningkatan gaji +25% terlewatkan</li></ul>
+        </div>
+        <div class="col-card" style="border-left: 4px solid var(--success);">
+            <h3 style="color: var(--success);">Solusi</h3>
+            <ul><li>Kelas XI S2: OpenAI API, prompt engineering, fetch API</li><li>Kelas XII S1: AI Agents, function calling, RAG dasar</li><li>Proyek: Chat app, AI-assisted content generator</li></ul>
+        </div>
+    </div>
+    <div class="data-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="data-card"><div class="data-value accent">3x</div><div class="data-label">Lowongan AI naik</div></div>
+        <div class="data-card"><div class="data-value success">+25%</div><div class="data-label">Gaji AI skill lebih tinggi</div></div>
+        <div class="data-card"><div class="data-value cyan">80%</div><div class="data-label">Developer menggunakan AI tools</div></div>
+    </div>
+    <div class="highlight-box">
+        <p><strong>Unik:</strong> Belum ada SMK lain yang memiliki inisiatif ini — diferensiasi terbesar bagi lulusan</p>
+    </div>
+</section>
+
+<!-- 12: Program 2 Web -->
+<section class="slide" data-slide="12">
+    <p class="slide-label">PROGRAM 2</p>
+    <h2 class="slide-title">Modern <span>Web Stack</span></h2>
+    <p class="slide-subtitle">Belum ada React/Next.js dan TypeScript dalam CP — 69,7% market share web</p>
+    <div class="two-col">
+        <div class="col-card">
+            <h3 style="color: var(--accent-light);">Solusi</h3>
+            <ul><li>Kelas XI S1: React dasar + TypeScript + Tailwind CSS</li><li>Kelas XI S2: Next.js + SSR + API routes + deploy</li><li>Tools: Vercel, Postman, GitHub</li></ul>
+        </div>
+        <div class="col-card">
+            <h3 style="color: var(--success);">Data Pendukung</h3>
+            <ul><li>React 69,7% market share — 5,3jt+ perusahaan</li><li>Next.js 67% enterprise React projects baru</li><li>TypeScript #1 di GitHub</li></ul>
+        </div>
+    </div>
+    <div class="highlight-box">
+        <p><strong>Dampak:</strong> Lulusan langsung siap bekerja — portfolio real di Vercel</p>
+    </div>
+</section>
+
+<!-- 13: Program 3 Git -->
+<section class="slide" data-slide="13">
+    <p class="slide-label">PROGRAM 3</p>
+    <h2 class="slide-title">Git dan DevOps <span>Pipeline</span></h2>
+    <p class="slide-subtitle">Belum ada Git dalam kurikulum — fundamental daily driver — ada di >90% job description developer</p>
+    <div class="two-col">
+        <div class="col-card">
+            <h3 style="color: var(--accent-light);">Solusi</h3>
+            <ul><li>Kelas X: Git dasar (init, add, commit, push)</li><li>Kelas XI: Branching, merge, PR, code review</li><li>Kelas XII: CI/CD + GitHub Actions + Docker prod</li></ul>
+        </div>
+        <div class="col-card">
+            <h3 style="color: var(--success);">Kenapa Penting</h3>
+            <ul><li>450+ lowongan Git jobs di Indonesia</li><li>56% developer menggunakan container</li><li>Sepenuhnya gratis — GitHub, Docker</li></ul>
+        </div>
+    </div>
+    <div class="highlight-box">
+        <p><strong>Zero Cost — High Impact:</strong> Syarat mutlak memasuki dunia kerja, dapat dimulai dari pertemuan pertama</p>
+    </div>
+</section>
+
+<!-- 14: Program 4 Database -->
+<section class="slide" data-slide="14">
+    <p class="slide-label">PROGRAM 4</p>
+    <h2 class="slide-title">Database <span>Modern</span></h2>
+    <p class="slide-subtitle">SQL manual sudah kuat namun belum ada ORM dan NoSQL</p>
+    <div class="two-col">
+        <div class="col-card">
+            <h3 style="color: var(--accent-light);">Solusi</h3>
+            <ul><li>Kelas XI: SQL manual tetap (fondasi) + Prisma ORM</li><li>Kelas XII: Supabase/Firebase — NoSQL, real-time, auth</li></ul>
+        </div>
+        <div class="col-card" style="border-color: var(--accent);">
+            <h3 style="color: var(--cyan);">Prinsip</h3>
+            <p style="color: var(--text-secondary); line-height: 1.8;">SQL manual tetap diajar — ORM di atas SQL, bukan ganti SQL. Fondasi SQL tetap fundamental.</p>
+        </div>
+    </div>
+    <div class="highlight-box">
+        <p><strong>Yang Tidak Berubah:</strong> SQL manual tetap menjadi fondasi. ORM hanya tools — kalau SQL lemah, ORM jadi masalah.</p>
+    </div>
+</section>
+
+<!-- 15: Program 5 Exposure -->
+<section class="slide" data-slide="15">
+    <p class="slide-label">PROGRAM 5</p>
+    <h2 class="slide-title">Industry <span>Exposure</span></h2>
+    <p class="slide-subtitle">CP sudah mencakup Technopreneurship namun belum ada exposure industri nyata</p>
+    <div class="location-card" style="margin-top: 24px;">
+        <div class="location-header">
+            <div class="location-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            <div><h3>Solusi</h3></div>
+        </div>
+        <div class="location-stats">
+            <div class="location-stat"><strong>Guest</strong><span>Developer Next IT jadi speaker</span></div>
+            <div class="location-stat"><strong>PKL</strong><span>Coding di project real</span></div>
+            <div class="location-stat"><strong>Portfolio</strong><span>CV, LinkedIn, GitHub</span></div>
+            <div class="location-stat"><strong>Interview</strong><span>Simulasi coding test</span></div>
+        </div>
+    </div>
+    <div class="highlight-box">
+        <p><strong>Value Next IT:</strong> Dapat mengirimkan praktisi secara langsung sebagai pembimbing PKL — bukan sebagai IT support, melainkan menulis kode bersama tim sesungguhnya.</p>
+    </div>
+</section>
+
+<!-- 16: Kelas X -->
+<section class="slide" data-slide="16">
+    <p class="slide-label">BREAKDOWN SEMESTER</p>
+    <h2 class="slide-title">Kelas X — Fase E <span>(Fondasi)</span></h2>
+    <p class="slide-subtitle">Quick Win — perubahan langsung implementable</p>
+    <div class="two-col">
+        <div class="col-card" style="border-left: 4px solid var(--success);">
+            <h3 style="color: var(--success);">Semester 1 — Tambah</h3>
+            <ul><li>Python sebagai bahasa pertama</li><li>VS Code + Git intro</li><li>AI tools awareness</li><li>Agile mindset dasar</li></ul>
+        </div>
+        <div class="col-card" style="border-left: 4px solid var(--warning);">
+            <h3 style="color: var(--warning);">Semester 1 — Kurangi</h3>
+            <ul><li>Teori cloud abstrak dipadatkan</li><li>SDLC waterfall ke Agile mindset</li></ul>
+        </div>
+    </div>
+    <div class="two-col" style="margin-top: 16px;">
+        <div class="col-card" style="border-left: 4px solid var(--success);">
+            <h3 style="color: var(--success);">Semester 2 — Tambah</h3>
+            <ul><li>OOP dengan Python</li><li>Proyek mini (todo list, kalkulator)</li><li>Code review teman sejawat</li></ul>
+        </div>
+        <div class="col-card" style="border-color: var(--accent);">
+            <h3 style="color: var(--cyan);">Yang TETAP</h3>
+            <p style="color: var(--text-secondary); line-height: 1.7;">Algoritma flowchart, pemrograman terstruktur, OOP, HTML/CSS/JS dasar, K3LH, technopreneurship</p>
+        </div>
+    </div>
+</section>
+
+<!-- 17: Kelas XI -->
+<section class="slide" data-slide="17">
+    <p class="slide-label">BREAKDOWN SEMESTER</p>
+    <h2 class="slide-title">Kelas XI — Fase F <span>(Transformasi)</span></h2>
+    <p class="slide-subtitle">Perubahan paling signifikan — React, TypeScript, Git, Docker, AI</p>
+    <div class="two-col">
+        <div class="col-card" style="border-left: 4px solid var(--danger);">
+            <h3 style="color: var(--danger);">Semester 1 — Tambah</h3>
+            <ul><li><strong>Git & GitHub</strong> — branching, commit, PR</li><li><strong>TypeScript + React dasar</strong></li><li><strong>Tailwind CSS</strong> — utility-first</li><li><strong>Docker Fundamental</strong></li><li><strong>ORM (Prisma)</strong></li><li><strong>Agile/Scrum</strong> — sprint simulasi</li></ul>
+        </div>
+        <div class="col-card" style="border-left: 4px solid var(--warning);">
+            <h3 style="color: var(--warning);">Semester 1 — Kurangi</h3>
+            <ul><li>UML 14 diagram ke 4 utama</li><li>Stored procedure detail dipadatkan</li><li>GUI library abstrak dialihkan ke React</li></ul>
+        </div>
+    </div>
+    <div class="two-col" style="margin-top: 16px;">
+        <div class="col-card" style="border-left: 4px solid var(--accent);">
+            <h3 style="color: var(--accent-light);">Semester 2 — AI dan Deploy</h3>
+            <ul><li><strong>Next.js</strong> — SSR, routing, API routes</li><li><strong>AI/LLM Integration</strong> — OpenAI API</li><li><strong>Deployment</strong> — Vercel, custom domain</li><li><strong>Docker Compose</strong> — multi-service</li><li><strong>Proyek akhir:</strong> fullstack + AI + deploy</li></ul>
+        </div>
+        <div class="col-card">
+            <h3 style="color: var(--warning);">Semester 2 — Kurangi</h3>
+            <ul><li>Materi HTML/CSS/JS yang terlalu panjang dipadatkan</li></ul>
+        </div>
+    </div>
+</section>
+
+<!-- 18: Kelas XII -->
+<section class="slide" data-slide="18">
+    <p class="slide-label">BREAKDOWN SEMESTER</p>
+    <h2 class="slide-title">Kelas XII — <span>Advance dan Siap Kerja</span></h2>
+    <div class="two-col">
+        <div class="col-card" style="border-left: 4px solid var(--accent);">
+            <h3 style="color: var(--accent-light);">Semester 1 — Tambah</h3>
+            <ul><li>CI/CD — GitHub Actions, auto-deploy</li><li>Docker Production — multi-stage build</li><li>AI Agents — function calling, tool use</li><li>NoSQL — Supabase/Firebase</li><li>Testing — Jest/Vitest, Playwright</li><li>Portofolio project — fullstack + AI</li></ul>
+        </div>
+        <div class="col-card" style="border-left: 4px solid var(--warning);">
+            <h3 style="color: var(--warning);">Semester 1 — Kurangi</h3>
+            <ul><li>Materi backup DB manual dipadatkan</li><li>Replikasi DB cukup secara konseptual</li></ul>
+        </div>
+    </div>
+    <div class="two-col" style="margin-top: 16px;">
+        <div class="col-card" style="border-left: 4px solid var(--success);">
+            <h3 style="color: var(--success);">Semester 2 — Persiapan Karir</h3>
+            <ul><li>CV digital, LinkedIn, GitHub</li><li>Soft skill industri — komunikasi, presentasi</li><li>Tech interview simulasi</li><li>PKL standar developer — coding real</li></ul>
+        </div>
+        <div class="col-card" style="border-color: var(--accent);">
+            <h3 style="color: var(--accent-light);">Output Akhir</h3>
+            <p style="color: var(--text-secondary); line-height: 1.7;">GitHub portfolio dengan 3+ deployed projects, CV digital, LinkedIn, siap apply kerja.</p>
+        </div>
+    </div>
+</section>
+
+<!-- 19: Vision -->
+<section class="slide" data-slide="19">
+    <p class="slide-label">VISION</p>
+    <h2 class="slide-title">Ke Mana Arah Industri <span>2027-2030?</span></h2>
+    <div style="margin: 24px 0; display: grid; gap: 16px;">
+        <div class="col-card" style="border-left: 4px solid var(--cyan);">
+            <h3 style="color: var(--cyan);">2027-2028 (Jangka Pendek)</h3>
+            <ul><li>AI coding assistant jadi default</li><li>AI-augmented testing — TDD kebiasaan</li><li>API-first arsitektur default</li><li>Cybersecurity syarat dasar (OWASP)</li></ul>
+        </div>
+        <div class="col-card" style="border-left: 4px solid var(--accent-light);">
+            <h3 style="color: var(--accent-light);">2029-2030 (Jangka Menengah)</h3>
+            <ul><li>AI-Human Collaborative Engineering</li><li>AI generate 70-80% kode — skill review jadi pembeda</li><li>Peran baru: Prompt Engineer, AI QA Engineer</li><li>AI-native apps — AI sebagai core, bukan add-on</li></ul>
+        </div>
+        <div class="col-card" style="border-left: 4px solid var(--success); background: var(--success-bg);">
+            <h3 style="color: var(--success);">Yang PASTI Tidak Berubah</h3>
+            <ul><li>Logika dan algoritma — AI tidak dapat menggantikan problem solving</li><li>SQL — ORM wrapper, SQL tetap fundamental</li><li>HTML/CSS/JS — web tidak akan hilang</li><li>Git — kolaborasi tanpa version control tidak dimungkinkan</li><li>Soft skills — komunikasi, kolaborasi, critical thinking</li></ul>
+        </div>
+    </div>
+</section>
+
+<!-- 20: Roadmap -->
+<section class="slide" data-slide="20">
+    <p class="slide-label">ROADMAP</p>
+    <h2 class="slide-title">Roadmap Implementasi — <span>3 Fase</span></h2>
+    <div style="margin: 16px 0; display: grid; gap: 16px;">
+        <table class="roadmap-table">
+            <thead><tr class="fase-quick"><th colspan="3" style="padding: 14px 18px; text-align: left; font-weight: 700;">Fase 1 — Quick Win (Semester 1, Kelas X)</th></tr></thead>
+            <tbody style="font-size: 0.85em; color: var(--text-secondary);">
+                <tr><td style="padding: 10px 18px;">Python sebagai bahasa pertama</td><td style="padding: 10px 18px; text-align: center; color: var(--success); font-weight: 700;">Gratis</td><td style="padding: 10px 18px; text-align: center;">1 minggu</td></tr>
+                <tr><td style="padding: 10px 18px;">VS Code + Git dasar</td><td style="padding: 10px 18px; text-align: center; color: var(--success); font-weight: 700;">Gratis</td><td style="padding: 10px 18px; text-align: center;">1-2 pertemuan</td></tr>
+                <tr><td style="padding: 10px 18px;">AI tools awareness</td><td style="padding: 10px 18px; text-align: center; color: var(--success); font-weight: 700;">Gratis</td><td style="padding: 10px 18px; text-align: center;">1 pertemuan</td></tr>
+                <tr><td style="padding: 10px 18px;">Agile mindset simulasi</td><td style="padding: 10px 18px; text-align: center; color: var(--success); font-weight: 700;">Gratis</td><td style="padding: 10px 18px; text-align: center;">2 pertemuan</td></tr>
+            </tbody>
+        </table>
+        <table class="roadmap-table">
+            <thead><tr class="fase-transform"><th colspan="3" style="padding: 14px 18px; text-align: left; font-weight: 700;">Fase 2 — Transformasi (Semester 2-3, Kelas XI)</th></tr></thead>
+            <tbody style="font-size: 0.85em; color: var(--text-secondary);">
+                <tr><td style="padding: 10px 18px;">TypeScript + React + Tailwind</td><td style="padding: 10px 18px; text-align: center; color: var(--warning); font-weight: 700;">Training guru</td><td style="padding: 10px 18px; text-align: center;">1 semester</td></tr>
+                <tr><td style="padding: 10px 18px;">GitHub + PR workflow</td><td style="padding: 10px 18px; text-align: center; color: var(--success); font-weight: 700;">Gratis</td><td style="padding: 10px 18px; text-align: center;">3-4 pertemuan</td></tr>
+                <tr><td style="padding: 10px 18px;">AI/LLM + Next.js + Deploy</td><td style="padding: 10px 18px; text-align: center; color: var(--warning); font-weight: 700;">~$5/siswa</td><td style="padding: 10px 18px; text-align: center;">1 semester</td></tr>
+            </tbody>
+        </table>
+        <table class="roadmap-table">
+            <thead><tr class="fase-advance"><th colspan="3" style="padding: 14px 18px; text-align: left; font-weight: 700;">Fase 3 — Advanced (Semester 4-6, Kelas XII)</th></tr></thead>
+            <tbody style="font-size: 0.85em; color: var(--text-secondary);">
+                <tr><td style="padding: 10px 18px;">CI/CD GitHub Actions</td><td style="padding: 10px 18px; text-align: center; color: var(--success); font-weight: 700;">Gratis</td><td style="padding: 10px 18px; text-align: center;">3-4 pertemuan</td></tr>
+                <tr><td style="padding: 10px 18px;">Docker Production</td><td style="padding: 10px 18px; text-align: center; color: var(--warning); font-weight: 700;">~$5-10/bln</td><td style="padding: 10px 18px; text-align: center;">3-4 pertemuan</td></tr>
+                <tr><td style="padding: 10px 18px;">Persiapan Karir</td><td style="padding: 10px 18px; text-align: center; color: var(--success); font-weight: 700;">Gratis</td><td style="padding: 10px 18px; text-align: center;">2-3 pertemuan</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- 21: 3 Prioritas -->
+<section class="slide" data-slide="21">
+    <p class="slide-label">TOP PRIORITIES</p>
+    <h2 class="slide-title">3 Hal yang <span>Paling Berdampak</span></h2>
+    <div style="margin: 24px 0; display: grid; gap: 20px;">
+        <div class="priority-card" style="border-left: 6px solid var(--accent);">
+            <div class="priority-num" style="background: var(--accent); color: white;">1</div>
+            <div style="flex:1;">
+                <div style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--accent-light); margin-bottom: 12px;">Git + GitHub + Docker</div>
+                <ul style="list-style: none; line-height: 2; color: var(--text-secondary);"><li>- Tanpa biaya, 100% gratis</li><li>- Syarat mutlak memasuki dunia kerja — 450+ lowongan, >90% job desc</li><li>- 2-3 pertemuan cukup untuk dasar</li></ul>
+            </div>
+        </div>
+        <div class="priority-card" style="border-left: 6px solid var(--cyan);">
+            <div class="priority-num" style="background: var(--cyan); color: var(--bg);">2</div>
+            <div style="flex:1;">
+                <div style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--cyan); margin-bottom: 12px;">React/Next.js + TypeScript</div>
+                <ul style="list-style: none; line-height: 2; color: var(--text-secondary);"><li>- 69,7% market share — 5,3jt+ perusahaan</li><li>- Next.js 67% enterprise projects baru</li><li>- Lulusan langsung siap bekerja</li></ul>
+            </div>
+        </div>
+        <div class="priority-card" style="border-left: 6px solid var(--success);">
+            <div class="priority-num" style="background: var(--success); color: white;">3</div>
+            <div style="flex:1;">
+                <div style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--success); margin-bottom: 12px;">AI/LLM Integration</div>
+                <ul style="list-style: none; line-height: 2; color: var(--text-secondary);"><li>- Differentiator terbesar — belum ada SMK lain yang memiliki yang mengimplementasikannya</li><li>- +25% gaji dari AI skill</li><li>- 73% developer Indonesia belum punya skill ini</li></ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 22: Format -->
+
+
+<!-- 23: Next Steps -->
+
+
+<!-- 24: Penutup -->
+<section class="slide slide-cover" data-slide="22">
+    <div class="cover-logo" style="margin-bottom: 40px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="48" height="48">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+            <polyline points="2 17 12 22 22 17"/>
+            <polyline points="2 12 12 17 22 12"/>
+        </svg>
+    </div>
+    <h1 class="cover-title">Mari Sinkronkan <span>Masa Depan</span></h1>
+    <p class="cover-subtitle" style="margin-bottom: 40px;">Lulusan SMK PGRI 35 Solokanjeruk siap bersaing di industri 2026+</p>
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; max-width: 520px; margin: 0 auto 32px;">
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">KONTAK</div>
+        <div style="font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; color: var(--text); margin-bottom: 4px;">Pratomo Bowo Leksono</div>
+        <div style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 12px;">Chief Business Officer</div>
+        <div style="color: var(--accent-light); font-size: 1rem; font-weight: 600;">PT Niaga Expert Teknologi</div>
+        <div style="color: var(--text-muted); margin-top: 16px;">bowo@next-it.co.id • next-it.co.id</div>
+    </div>
+    <div style="font-size: 1.6rem; color: var(--accent-light); font-weight: 600;">Terima kasih</div>
+</section>
+
+</div>
+
+<div class="nav">
+    <button class="nav-btn" id="prevBtn">&larr;</button>
+    <span class="slide-counter" id="slideCounter">1 / 22</span>
+    <button class="nav-btn" id="nextBtn">&rarr;</button>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide'), progress = document.getElementById('progress'), counter = document.getElementById('slideCounter'), prev = document.getElementById('prevBtn'), next = document.getElementById('nextBtn');
+let current = 0;
+function go(n) {
+    slides.forEach(s => s.classList.remove('active'));
+    slides[n].classList.add('active');
+    progress.style.width = ((n+1)/slides.length*100)+'%';
+    counter.textContent = (n+1)+' / '+slides.length;
+    prev.disabled = n===0; next.disabled = n===slides.length-1;
+}
+function ns() { if(current<slides.length-1) { current++; go(current); } }
+function ps() { if(current>0) { current--; go(current); } }
+prev.onclick = ps; next.onclick = ns;
+document.onkeydown = e => { if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();ns();} if(e.key==='ArrowLeft'){e.preventDefault();ps();} };
+let ts=0,te=0;
+document.addEventListener('touchstart',e=>{ts=e.changedTouches[0].screenX;});
+document.addEventListener('touchend',e=>{te=e.changedTouches[0].screenX;if(ts-te>50)ns();else if(te-ts>50)ps();});
+go(0);
+</script>
+</body>
+</html>
